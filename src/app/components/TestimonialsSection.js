@@ -179,7 +179,7 @@ export default function TestimonialsSection() {
           </AnimatePresence>
         </div>
 
-        <div className="flex justify-center mt-8 gap-2">
+        {/* <div className="flex justify-center mt-8 gap-2">
           {testimonials.map((_, i) => (
             <button
               key={i}
@@ -189,7 +189,21 @@ export default function TestimonialsSection() {
               }`}
             ></button>
           ))}
+        </div> */}
+        <div className="flex justify-center mt-8 gap-2">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                current === i ? 'bg-teal-700' : 'bg-teal-300'
+              }`}
+              aria-label={`Go to testimonial ${i + 1}`}
+              title={`Go to testimonial ${i + 1}`}
+            ></button>
+          ))}
         </div>
+
       </div>
     </section>
   );

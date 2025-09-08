@@ -49,6 +49,7 @@ export default function LocationSection() {
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
+            title="Location map for Dr. Arunima Dental Clinic"
           ></iframe>
         </div>
 

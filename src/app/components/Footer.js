@@ -50,8 +50,14 @@ export default function Footer() {
         <div>
           <h4 className="text-lg font-semibold mb-3">Follow Us</h4>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-teal-600"><Facebook /></a>
-            <a href="#" className="hover:text-teal-600"><Instagram /></a>
+            {/* <a href="#" className="hover:text-teal-600"><Facebook /></a>
+            <a href="#" className="hover:text-teal-600"><Instagram /></a> */}
+            <a href="#" className="hover:text-teal-600" aria-label="Facebook" title="Facebook">
+              <Facebook />
+            </a>
+            <a href="#" className="hover:text-teal-600" aria-label="Instagram" title="Instagram">
+              <Instagram />
+            </a>
           </div>
         </div>
       </div>
