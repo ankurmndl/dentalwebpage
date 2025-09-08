@@ -106,7 +106,9 @@ export default function HeroSection() {
             width={400}
             height={400}
             className="rounded-2xl object-cover shadow-lg"
-            priority={false}
+            // priority={false}
+            fetchpriority="high"
+            loading="eager"
           />
         </motion.div>
       </div>
