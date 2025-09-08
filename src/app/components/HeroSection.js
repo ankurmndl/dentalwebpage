@@ -56,6 +56,8 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
+
 
 export default function HeroSection() {
   return (
@@ -76,18 +78,18 @@ export default function HeroSection() {
             20+ years of creating beautiful, confident smiles
           </p>
           <div className="flex justify-center md:justify-start gap-4">
-            <a
+            <Link
               href="/contact"
               className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg text-lg shadow transition"
             >
               Book Appointment
-            </a>
-            <a
+            </Link>
+            <Link
               href="/services"
               className="text-teal-700 border border-teal-600 px-6 py-3 rounded-lg text-lg hover:bg-teal-50 transition"
             >
               View Services
-            </a>
+            </Link>
           </div>
         </motion.div>
 
