@@ -166,6 +166,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const services = [
   {
@@ -236,7 +237,7 @@ export default function ServicesSection() {
               className="group rounded-2xl overflow-hidden bg-white shadow hover:shadow-xl transition-shadow duration-300"
               aria-label={service.title}
             >
-              <a href={service.link} className="block h-full">
+              <Link href={service.link} className="block h-full">
                 <div className="relative w-full h-60 overflow-hidden">
                   <Image
                     src={service.image}
@@ -254,7 +255,7 @@ export default function ServicesSection() {
                     {service.description}
                   </p>
                 </div>
-              </a>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -267,12 +268,12 @@ export default function ServicesSection() {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <a
+          <Link
             href="/services"
             className="inline-block bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg text-base shadow-md transition"
           >
             Explore All Services
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
