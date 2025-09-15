@@ -57,6 +57,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import BookAppointment from './BookAppointment';
 
 
 export default function HeroSection() {
@@ -78,12 +79,13 @@ export default function HeroSection() {
             20+ years of creating beautiful, confident smiles
           </p>
           <div className="flex justify-center md:justify-start gap-4">
-            <Link
+            {/* <Link
               href="/contact"
               className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg text-lg shadow transition"
             >
               Book Appointment
-            </Link>
+            </Link> */}
+            <BookAppointment />
             <Link
               href="/services"
               className="text-teal-700 border border-teal-600 px-6 py-3 rounded-lg text-lg hover:bg-teal-50 transition"
