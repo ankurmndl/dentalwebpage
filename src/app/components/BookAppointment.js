@@ -132,6 +132,7 @@
 'use client';
 
 import { useState } from "react";
+import Head from "next/head";
 
 export default function BookAppointment() {
   const [isOpen, setIsOpen] = useState(false);
@@ -173,6 +174,13 @@ export default function BookAppointment() {
 
     setStatus("loading");
 
+      // Get the reCAPTCHA token
+    const captchaResponse = grecaptcha.getResponse();
+    if (!captchaResponse) {
+        setStatus("Please complete the CAPTCHA.");
+        return;
+    }
+
     try {
       const res = await fetch("/api/appointment", {
         method: "POST",
@@ -198,6 +206,9 @@ export default function BookAppointment() {
   return (
     <>
       {/* Book Appointment Button */}
+      <Head>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+      </Head>
       <button
         onClick={toggleModal}
         className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
@@ -208,6 +219,7 @@ export default function BookAppointment() {
       {/* Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+         <div className="g-recaptcha" data-sitekey="6LehLMsrAAAAAG-NxK95-vznG1U7z9nrCG4phB9Z"></div>
           <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6 relative">
             <button
               onClick={toggleModal}
