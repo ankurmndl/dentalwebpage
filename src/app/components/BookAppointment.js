@@ -297,8 +297,7 @@
 
 'use client';
 
-import { useState } from "react";
-import Head from "next/head";
+import { useState, useEffect, useRef } from "react";
 
 export default function BookAppointment() {
   const [isOpen, setIsOpen] = useState(false);
@@ -310,6 +309,7 @@ export default function BookAppointment() {
     message: ""
   });
   const [status, setStatus] = useState(null);
+  const captchaRef = useRef(null);
 
   const toggleModal = () => setIsOpen(!isOpen);
 
@@ -317,30 +317,49 @@ export default function BookAppointment() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Load reCAPTCHA script dynamically
+  useEffect(() => {
+    if (!document.getElementById("recaptcha-script")) {
+      const script = document.createElement("script");
+      script.id = "recaptcha-script";
+      script.src = "https://www.google.com/recaptcha/api.js";
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  // Render CAPTCHA when modal opens
+  useEffect(() => {
+    if (isOpen && window.grecaptcha && captchaRef.current) {
+      window.grecaptcha.render(captchaRef.current, {
+        sitekey: "6LfuO8srAAAAAKQGQvj9ICiGQMIyXcLIxKXJ7-fx",
+      });
+    }
+  }, [isOpen]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate required fields
+    // Basic validation
     if (!formData.name || !formData.email || !formData.phone || !formData.date) {
       setStatus("Please fill all required fields.");
       return;
     }
 
-    // Email format validation
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(formData.email)) {
       setStatus("Please enter a valid email address.");
       return;
     }
 
-    // Phone format validation
     const phonePattern = /^[0-9]{7,15}$/;
     if (!phonePattern.test(formData.phone)) {
       setStatus("Please enter a valid phone number.");
       return;
     }
 
-    // Get the CAPTCHA token
+    // Get CAPTCHA response
     const captchaResponse = window.grecaptcha?.getResponse();
     if (!captchaResponse) {
       setStatus("Please complete the CAPTCHA.");
@@ -355,8 +374,8 @@ export default function BookAppointment() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          captcha: captchaResponse
-        })
+          captcha: captchaResponse,
+        }),
       });
 
       const result = await res.json();
@@ -364,34 +383,27 @@ export default function BookAppointment() {
       if (result.status === "success") {
         setStatus("success");
         setFormData({ name: "", email: "", phone: "", date: "", message: "" });
-
-        // Reset the CAPTCHA
-        if (window.grecaptcha) {
-          window.grecaptcha.reset();
-        }
-
-        setTimeout(() => setIsOpen(false), 2000);
       } else {
         setStatus(result.message || "Something went wrong. Please try again.");
-        if (window.grecaptcha) {
-          window.grecaptcha.reset();
-        }
+      }
+
+      // Reset CAPTCHA after submission
+      if (window.grecaptcha) {
+        window.grecaptcha.reset();
+      }
+
+      if (result.status === "success") {
+        setTimeout(() => setIsOpen(false), 2000);
       }
     } catch (error) {
       console.error("Submission error:", error);
       setStatus("Something went wrong. Please try again.");
-      if (window.grecaptcha) {
-        window.grecaptcha.reset();
-      }
+      if (window.grecaptcha) window.grecaptcha.reset();
     }
   };
 
   return (
     <>
-      <Head>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-      </Head>
-
       {/* Book Appointment Button */}
       <button
         onClick={toggleModal}
@@ -457,7 +469,8 @@ export default function BookAppointment() {
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               ></textarea>
 
-              <div className="g-recaptcha" data-sitekey="6LehLMsrAAAAAG-NxK95-vznG1U7z9nrCG4phB9Z"></div>
+              {/* CAPTCHA container */}
+              <div ref={captchaRef}></div>
 
               <button
                 type="submit"
